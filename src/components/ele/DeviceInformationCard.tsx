@@ -11,6 +11,45 @@ import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 import { DeviceInfoRaw, DeviceInfo, Config } from "@/lib/types";
 
+function DeviceInfoItem({ device }: { device: DeviceInfo }) {
+  const formatMacAddress = (mac: string) => {
+    if (mac.length === 12) {
+      return mac.match(/.{1,2}/g)?.join(':').toUpperCase() || mac;
+    }
+    return mac;
+  };
+
+  return (
+    <div className="flex flex flex-col gap-1">
+      <div className="flex flex-row items-center justify-between">
+        <span className="font-bold">Mac</span>
+        <span>{formatMacAddress(device.mac)}</span>
+      </div>
+      <div className="flex flex-row items-center justify-between">
+        <span className="font-bold">IP</span>
+        <span>{device.ip}</span>
+      </div>
+      <div className="flex flex-row items-center justify-between">
+        <span className="font-bold">上行/下行 (Mb)</span>
+        <span>
+          {device.upload.toFixed(2)}/{device.download.toFixed(2)}
+        </span>
+      </div>
+      <div className="flex flex-row items-center justify-between">
+        <span className="font-bold">登录时间</span>
+        <span>{device.time}</span>
+      </div>
+      {device.account && (
+        <div className="flex flex-row items-center justify-between">
+          <span className="font-bold">登录账号</span>
+          <span>{device.account}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export default function DeviceInformationCard({ config }: { config: Config }) {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo[]>([]);
   const [msg, setMsg] = useState<string | undefined>(undefined);
@@ -54,34 +93,7 @@ export default function DeviceInformationCard({ config }: { config: Config }) {
       </CardHeader>
       <CardContent className="flex flex-col gap-6 text-sm">
         {deviceInfo.map((device, index) => {
-          return (
-            <div key={index} className="flex flex flex-col gap-1">
-              <div className="flex flex-row items-center justify-between">
-                <span className="font-bold">Mac</span>
-                <span>{device.mac}</span>
-              </div>
-              <div className="flex flex-row items-center justify-between">
-                <span className="font-bold">IP</span>
-                <span>{device.ip}</span>
-              </div>
-              <div className="flex flex-row items-center justify-between">
-                <span className="font-bold">上行/下行 (Mb)</span>
-                <span>
-                  {device.upload.toFixed(2)}/{device.download.toFixed(2)}
-                </span>
-              </div>
-              <div className="flex flex-row items-center justify-between">
-                <span className="font-bold">登录时间</span>
-                <span>{device.time}</span>
-              </div>
-              {device.account && (
-                <div className="flex flex-row items-center justify-between">
-                  <span className="font-bold">登录账号</span>
-                  <span>{device.account}</span>
-                </div>
-              )}
-            </div>
-          );
+          return <DeviceInfoItem key={index} device={device} />;
         })}
       </CardContent>
       <CardFooter>

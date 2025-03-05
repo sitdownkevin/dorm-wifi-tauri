@@ -13,7 +13,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, windows-latest]
+        platform: [windows-latest]
+        include:
+          - platform: macos-latest
+            target: x86_64-apple-darwin
+          - platform: macos-latest
+            target: aarch64-apple-darwin
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
@@ -27,6 +32,8 @@ jobs:
 
       - name: Install Rust (Stable)
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
@@ -46,6 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          args: --target ${{ matrix.target }}
           tagName: ${{ github.ref_name }}
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download and install this version.'

@@ -1,6 +1,7 @@
 use reqwest;
 use serde_json;
 use serde_json::Value;
+use regex::Regex;
 
 #[tauri::command]
 pub async fn disconnect(host_url: String) -> Result<bool, String> {
@@ -17,15 +18,15 @@ pub async fn disconnect(host_url: String) -> Result<bool, String> {
         Err(_) => return Err(String::from("获取响应数据失败")),
     };
 
-    let json_str = body
-        .trim()
-        .strip_prefix("dr1006(")
-        .and_then(|s| s.strip_suffix(")"))
-        .unwrap_or(body.as_str());
 
-    println!("json_str: {}", json_str);
+    let re = Regex::new(r"dr1006\((.*?)\)").unwrap();
+    let json_str = match re.captures(&body) {
+        Some(caps) => caps[1].to_string(),
+        None => return Err(String::from("解析 Json 数据失败")),
+    };
 
-    let data: Value = match serde_json::from_str(json_str) {
+
+    let data: Value = match serde_json::from_str(&json_str) {
         Ok(data) => data,
         Err(e) => {
             println!("解析 Json 数据失败: {}", e);
