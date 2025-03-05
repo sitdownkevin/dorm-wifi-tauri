@@ -1,8 +1,8 @@
 [package]
-name = "dorm-wifi-tauri"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+name = "DORM WIFI"
+version = "1.0.1"
+description = "Wifi connector for TJ-DORM-WIFI"
+authors = ["Ke Xu"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
