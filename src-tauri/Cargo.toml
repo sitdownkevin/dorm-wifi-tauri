@@ -1,5 +1,5 @@
 [package]
-name = "DORM WIFI"
+name = "dorm-wifi-tauri"
 version = "1.0.1"
 description = "Wifi connector for TJ-DORM-WIFI"
 authors = ["Ke Xu"]
