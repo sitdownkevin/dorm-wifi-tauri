@@ -16,13 +16,13 @@
 
 ### (Dis)connect to `TJ-DORM-WIFI`
 
-<img src="./docs/Snipaste_2025-03-05_20-18-35.png" width="200"/>
+<img src="./docs/CleanShot 2025-03-06 at 00.55.14@2x.png"/>
 
 ### Get device information by account
 
 Query all device information under the current account
 
-<img src="./docs/Snipaste_2025-03-05_20-18-56.png" width="200"/>
+<img src="./docs/CleanShot 2025-03-06 at 00.56.46@2x.png"/>
 
 ## Dev
 
