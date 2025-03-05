@@ -6,9 +6,9 @@
 
 - **Download links**
 
-    - macOS - Intel (Build from source) | [Apple Silicon](https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.0/DORM.WIFI_0.1.0_aarch64.dmg)
+    - macOS - [Intel](https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.1/DORM.WIFI_1.0.1_x64.dmg) | [Apple Silicon](https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.1/DORM.WIFI_1.0.1_aarch64.dmg)
 
-    - Windows - [Intel/AMD](https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.0/DORM.WIFI_0.1.0_x64-setup.exe)
+    - Windows - [Intel/AMD](https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.1/DORM.WIFI_1.0.1_x64-setup.exe)
 
 - - The mobile (Android/iOS) version is [here](https://github.com/sitdownkevin/dorm-wifi-react-native).
 
