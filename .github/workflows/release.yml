@@ -53,7 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: --target ${{ matrix.target }}
+          args: ${{ matrix.target && format('--target {0}', matrix.target) || '' }}
           tagName: ${{ github.ref_name }}
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download and install this version.'
