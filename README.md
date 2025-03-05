@@ -10,6 +10,8 @@
 
     - Windows - [Intel/AMD](https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.0/DORM.WIFI_0.1.0_x64-setup.exe)
 
+- - The mobile (Android/iOS) version is [here](https://github.com/sitdownkevin/dorm-wifi-react-native).
+
 ## Features
 
 ### (Dis)connect to `TJ-DORM-WIFI`
