@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/logo.png">
+    <title>DORM WIFI - 同济大学寝室 WiFi 连接工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --background: #f5f5f5;
+            --card-bg: white;
+            --gradient-start: #3498db;
+            --gradient-end: #2c3e50;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(52, 152, 219, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(44, 62, 80, 0.05) 0%, transparent 20%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease-out;
+        }
+        
+        .wifi-icon {
+            position: absolute;
+            font-size: 12rem;
+            opacity: 0.03;
+            top: -100px;
+            right: 10%;
+            color: var(--primary);
+            transform: rotate(15deg);
+            z-index: -1;
+        }
+        
+        .versions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 80px;
+            perspective: 1000px;
+        }
+        
+        .version-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            width: 320px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transform-style: preserve-3d;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .version-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .version-card:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        
+        .version-card:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+        
+        .version-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(44, 62, 80, 0.05) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .version-card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .version-card:hover::before {
+            opacity: 1;
+        }
+        
+        .version-icon {
+            font-size: 4.5rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            transition: transform 0.5s ease;
+            text-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .version-card:hover .version-icon {
+            transform: scale(1.1) translateY(-5px);
+        }
+        
+        .version-title {
+            font-size: 1.7rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .version-title::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .version-card:hover .version-title::after {
+            width: 70px;
+        }
+        
+        .version-description {
+            margin-bottom: 30px;
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0 5px 10px 5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            z-index: 1;
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+            z-index: -1;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .download-btn:hover::before {
+            left: 100%;
+        }
+        
+        .download-options {
+            margin-bottom: 20px;
+        }
+        
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 30px;
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .github-link i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .github-link:hover {
+            color: var(--primary);
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .features {
+            margin-bottom: 80px;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        .features h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .features h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            max-width: 700px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .feature-item {
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            animation: fadeInUp 1s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .feature-item:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+        
+        .feature-item:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .feature-item:nth-child(3) {
+            animation-delay: 0.7s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            color: var(--primary);
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(44, 62, 80, 0.15));
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+        
+        .feature-description {
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 70px;
+            color: var(--text-light);
+            padding: 30px 0;
+            position: relative;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .open-source {
+            margin-top: 20px;
+        }
+        
+        .open-source a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+        
+        .open-source a:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            z-index: 100;
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+        }
+        
+        .scroll-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            background-color: rgba(52, 152, 219, 0.5);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Dark mode toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(45deg);
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            --background: #1a1a2e;
+            --card-bg: #16213e;
+            --text-dark: #e2e2e2;
+            --text-light: #b2b2b2;
+            --primary: #4d79ff;
+            --primary-dark: #3a66ff;
+            --gradient-start: #4d79ff;
+            --gradient-end: #3a66ff;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .versions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .version-card {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .wifi-icon {
+                font-size: 8rem;
+                top: -60px;
+            }
+            
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </div>
+    
+    <div class="scroll-to-top" id="scrollBtn">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="wifi-icon">
+                <i class="fas fa-wifi"></i>
+            </div>
+            <h1>DORM WIFI</h1>
+            <p class="subtitle">简单、快速的同济大学寝室 WiFi 连接工具</p>
+        </header>
+        
+        <div class="versions">
+            <div class="version-card">
+                <div class="version-icon">
+                    <i class="fab fa-apple"></i>
+                </div>
+                <h2 class="version-title">macOS 版本</h2>
+                <p class="version-description">适用于 macOS 10.15 及以上版本的系统</p>
+                <div class="download-options">
+                    <a href="https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.1/DORM.WIFI_1.0.1_x64.dmg" class="download-btn">
+                        <i class="fas fa-download"></i> Intel 版本
+                    </a>
+                    <a href="https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.1/DORM.WIFI_1.0.1_aarch64.dmg" class="download-btn">
+                        <i class="fas fa-download"></i> Apple Silicon 版本
+                    </a>
+                </div>
+                <a href="https://github.com/sitdownkevin/dorm-wifi-tauri" class="github-link">
+                    <i class="fab fa-github"></i> 查看源代码
+                </a>
+            </div>
+            
+            <div class="version-card">
+                <div class="version-icon">
+                    <i class="fab fa-windows"></i>
+                </div>
+                <h2 class="version-title">Windows 版本</h2>
+                <p class="version-description">适用于 Windows 10 及以上版本的系统</p>
+                <a href="https://github.com/sitdownkevin/dorm-wifi-tauri/releases/download/v1.0.1/DORM.WIFI_1.0.1_x64-setup.exe" class="download-btn">
+                    <i class="fas fa-download"></i> 下载最新版
+                </a>
+                <a href="https://github.com/sitdownkevin/dorm-wifi-tauri" class="github-link">
+                    <i class="fab fa-github"></i> 查看源代码
+                </a>
+            </div>
+            
+            <div class="version-card">
+                <div class="version-icon">
+                    <i class="fab fa-android"></i>
+                </div>
+                <h2 class="version-title">Android 版本</h2>
+                <p class="version-description">适用于 Android 8.0 及以上版本的系统</p>
+                <a href="https://github.com/sitdownkevin/dorm-wifi-react-native/releases/download/v1.0.0/build-1740468692243.apk" class="download-btn">
+                    <i class="fas fa-download"></i> 下载最新版
+                </a>
+                <a href="https://github.com/sitdownkevin/dorm-wifi-react-native" class="github-link">
+                    <i class="fab fa-github"></i> 查看源代码
+                </a>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>主要功能</h2>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-title">快速连接</div>
+                        <div class="feature-description">一键连接宿舍 WiFi，无需重复输入账号密码</div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-title">安全存储</div>
+                        <div class="feature-description">本地安全存储您的网络凭据</div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-title">网络状态</div>
+                        <div class="feature-description">实时监控网络连接状态</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>© 2025 DORM WIFI</p>
+            <div class="open-source">
+                <!-- <p>完全开源</p> -->
+                <p>
+                    <a href="https://github.com/sitdownkevin/dorm-wifi-tauri">桌面端 (Tauri)</a> | 
+                    <a href="https://github.com/sitdownkevin/dorm-wifi-react-native">移动端 (React Native)</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Check for saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Scroll to top button
+        const scrollBtn = document.getElementById('scrollBtn');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Card hover effect
+        const cards = document.querySelectorAll('.version-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 300);
+            });
+        });
+        
+        // Create particles
+        function createParticles() {
+            const numParticles = 15;
+            
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 3;
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const duration = Math.random() * 30 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                document.body.appendChild(particle);
+                
+                // Animate particle
+                setTimeout(() => {
+                    animateParticle(particle);
+                }, delay * 1000);
+            }
+        }
+        
+        function animateParticle(particle) {
+            const newX = Math.random() * window.innerWidth;
+            const newY = Math.random() * window.innerHeight;
+            const duration = Math.random() * 30 + 10;
+            
+            particle.style.transition = `all ${duration}s linear`;
+            particle.style.transform = `translate(${newX - parseFloat(particle.style.left)}px, ${newY - parseFloat(particle.style.top)}px)`;
+            
+            setTimeout(() => {
+                particle.remove();
+                const newParticle = document.createElement('div');
+                newParticle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 3;
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                
+                newParticle.style.width = `${size}px`;
+                newParticle.style.height = `${size}px`;
+                newParticle.style.left = `${x}px`;
+                newParticle.style.top = `${y}px`;
+                newParticle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                document.body.appendChild(newParticle);
+                animateParticle(newParticle);
+            }, duration * 1000);
+        }
+        
+        // Initialize particles
+        createParticles();
+        
+        // Add animation classes on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.version-card, .feature-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
