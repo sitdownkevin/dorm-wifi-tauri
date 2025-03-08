@@ -14,14 +14,15 @@
         }
         
         :root {
-            --primary: #3498db;
-            --primary-dark: #2980b9;
+            --primary: #4a6fa5;
+            --primary-dark: #3a5a80;
             --text-dark: #2c3e50;
-            --text-light: #7f8c8d;
-            --background: #f5f5f5;
+            --text-light: #6c7a89;
+            --background: #f8f9fa;
             --card-bg: white;
-            --gradient-start: #3498db;
+            --gradient-start: #4a6fa5;
             --gradient-end: #2c3e50;
+            --accent: #c47c5c;
         }
         
         body {
@@ -30,7 +31,7 @@
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(52, 152, 219, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 10% 20%, rgba(74, 111, 165, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(44, 62, 80, 0.05) 0%, transparent 20%);
         }
         
@@ -57,6 +58,9 @@
             position: relative;
             display: inline-block;
             animation: fadeInDown 1s ease-out;
+            text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            letter-spacing: 2px;
+            font-weight: 700;
         }
         
         h1::after {
@@ -100,8 +104,8 @@
         
         .version-card {
             background-color: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             padding: 40px 30px;
             width: 320px;
             text-align: center;
@@ -112,6 +116,8 @@
             transform-style: preserve-3d;
             animation: fadeInUp 0.8s ease-out;
             animation-fill-mode: both;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(10px);
         }
         
         .version-card:nth-child(1) {
@@ -130,13 +136,13 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(44, 62, 80, 0.05) 100%);
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, transparent 70%, rgba(74, 111, 165, 0.1) 70%);
             z-index: -1;
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            border-radius: 0 12px 0 0;
+            transition: all 0.3s ease;
         }
         
         .version-card:hover {
@@ -145,19 +151,57 @@
         }
         
         .version-card:hover::before {
-            opacity: 1;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, transparent 65%, rgba(74, 111, 165, 0.2) 65%);
+        }
+        
+        .version-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gradient-start), transparent, var(--gradient-end));
+            z-index: -2;
+            border-radius: 14px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .version-card:hover::after {
+            opacity: 0.7;
         }
         
         .version-icon {
+            position: relative;
             font-size: 4.5rem;
             margin-bottom: 25px;
             color: var(--primary);
             transition: transform 0.5s ease;
-            text-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            text-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+            z-index: 1;
         }
         
-        .version-card:hover .version-icon {
-            transform: scale(1.1) translateY(-5px);
+        .version-icon::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: rgba(74, 111, 165, 0.08);
+            border-radius: 50%;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+        
+        .version-card:hover .version-icon::after {
+            width: 90px;
+            height: 90px;
+            background-color: rgba(74, 111, 165, 0.12);
         }
         
         .version-title {
@@ -196,15 +240,18 @@
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
             color: white;
             padding: 14px 28px;
-            border-radius: 50px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             transition: all 0.3s ease;
             margin: 0 5px 10px 5px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
             z-index: 1;
+            letter-spacing: 0.5px;
+            border: none;
+            outline: none;
         }
         
         .download-btn::before {
@@ -221,7 +268,7 @@
         
         .download-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+            box-shadow: 0 8px 20px rgba(74, 111, 165, 0.5);
         }
         
         .download-btn:hover::before {
@@ -242,8 +289,9 @@
             font-size: 0.95rem;
             transition: all 0.3s ease;
             padding: 8px 15px;
-            border-radius: 30px;
-            background-color: rgba(52, 152, 219, 0.05);
+            border-radius: 6px;
+            background-color: rgba(74, 111, 165, 0.05);
+            border: 1px solid rgba(74, 111, 165, 0.1);
         }
         
         .github-link i {
@@ -253,7 +301,7 @@
         
         .github-link:hover {
             color: var(--primary);
-            background-color: rgba(52, 152, 219, 0.1);
+            background-color: rgba(74, 111, 165, 0.1);
             transform: translateY(-2px);
         }
         
@@ -297,13 +345,16 @@
         .feature-item {
             padding: 25px;
             background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             display: flex;
             align-items: flex-start;
             animation: fadeInUp 1s ease-out;
             animation-fill-mode: both;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
         }
         
         .feature-item:nth-child(1) {
@@ -318,28 +369,38 @@
             animation-delay: 0.7s;
         }
         
-        .feature-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+            transition: height 0.3s ease;
+        }
+        
+        .feature-item:hover::before {
+            height: 100%;
         }
         
         .feature-icon {
             color: var(--primary);
             font-size: 1.6rem;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(44, 62, 80, 0.15));
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.15), rgba(44, 62, 80, 0.15));
             width: 50px;
             height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 10px;
             margin-right: 15px;
             flex-shrink: 0;
             transition: all 0.3s ease;
         }
         
         .feature-item:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
+            animation: pulse 1s infinite;
         }
         
         .feature-content {
@@ -362,9 +423,27 @@
             text-align: center;
             margin-top: 70px;
             color: var(--text-light);
-            padding: 30px 0;
+            padding: 50px 0 30px;
             position: relative;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(135deg, var(--card-bg) 25%, transparent 25%) -10px 0,
+                        linear-gradient(225deg, var(--card-bg) 25%, transparent 25%) -10px 0,
+                        linear-gradient(315deg, var(--card-bg) 25%, transparent 25%),
+                        linear-gradient(45deg, var(--card-bg) 25%, transparent 25%);
+            background-size: 20px 20px;
+            background-color: var(--background);
         }
         
         .open-source {
@@ -380,7 +459,7 @@
         }
         
         .open-source a:hover {
-            background-color: rgba(52, 152, 219, 0.1);
+            background-color: rgba(74, 111, 165, 0.1);
         }
         
         .scroll-to-top {
@@ -398,7 +477,7 @@
             cursor: pointer;
             opacity: 0;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.4);
             z-index: 100;
         }
         
@@ -408,7 +487,7 @@
         
         .scroll-to-top:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+            box-shadow: 0 8px 20px rgba(74, 111, 165, 0.6);
         }
         
         @keyframes fadeIn {
@@ -441,7 +520,7 @@
         .particle {
             position: fixed;
             border-radius: 50%;
-            background-color: rgba(52, 152, 219, 0.5);
+            background-color: rgba(74, 111, 165, 0.4);
             pointer-events: none;
             z-index: -1;
         }
@@ -451,8 +530,8 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background-color: var(--card-bg);
             display: flex;
@@ -462,6 +541,7 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
             transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .theme-toggle:hover {
@@ -470,14 +550,15 @@
         
         /* Dark mode styles */
         body.dark-mode {
-            --background: #1a1a2e;
-            --card-bg: #16213e;
-            --text-dark: #e2e2e2;
-            --text-light: #b2b2b2;
-            --primary: #4d79ff;
-            --primary-dark: #3a66ff;
-            --gradient-start: #4d79ff;
-            --gradient-end: #3a66ff;
+            --background: #1f2937;
+            --card-bg: #293548;
+            --text-dark: #e2e8f0;
+            --text-light: #cbd5e1;
+            --primary: #6b8cae;
+            --primary-dark: #5a7a99;
+            --gradient-start: #6b8cae;
+            --gradient-end: #3a4a5e;
+            --accent: #d4976a;
         }
         
         /* Responsive styles */
@@ -505,10 +586,173 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* 添加页面平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 添加精美的分隔线 */
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            margin: 60px auto;
+            width: 80%;
+            max-width: 800px;
+            opacity: 0.4;
+        }
+        
+        /* 添加加载动画 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(74, 111, 165, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        /* 添加鼠标悬停时的图标动画 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 添加产品展示区域样式 */
+        .product-showcase {
+            margin: 60px auto;
+            max-width: 1000px;
+        }
+        
+        .showcase-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .showcase-title::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .showcase-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .showcase-image-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            max-width: 450px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .showcase-image-container:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        
+        .showcase-image-container:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        
+        .showcase-image-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .showcase-image-container:hover .showcase-image {
+            transform: scale(1.02);
+        }
+        
+        .showcase-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .showcase-image-container:hover .showcase-caption {
+            transform: translateY(0);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .showcase-images {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .showcase-image-container {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- 添加加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
     <div class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon" id="themeIcon"></i>
     </div>
@@ -525,6 +769,24 @@
             <h1>DORM WIFI</h1>
             <p class="subtitle">简单、快速的同济大学寝室 WiFi 连接工具</p>
         </header>
+        
+        <!-- 将产品展示区域移到下载区域上方 -->
+        <div class="product-showcase">
+            <!-- <h2 class="showcase-title">产品展示</h2> -->
+            <div class="showcase-images">
+                <div class="showcase-image-container">
+                    <img src="./CleanShot 2025-03-06 at 00.55.14@2x.png" alt="DORM WIFI 登录界面" class="showcase-image">
+                    <div class="showcase-caption">简洁直观的登录界面</div>
+                </div>
+                <div class="showcase-image-container">
+                    <img src="./CleanShot 2025-03-06 at 00.56.46@2x.png" alt="DORM WIFI 状态界面" class="showcase-image">
+                    <div class="showcase-caption">详细的网络状态监控</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加分隔线 -->
+        <div class="divider"></div>
         
         <div class="versions">
             <div class="version-card">
@@ -574,6 +836,9 @@
                 </a>
             </div>
         </div>
+        
+        <!-- 添加分隔线 -->
+        <div class="divider"></div>
         
         <div class="features">
             <h2>主要功能</h2>
@@ -676,10 +941,26 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
+                const rotateX = (y - centerY) / 15; // 减小旋转角度使效果更精致
+                const rotateY = (centerX - x) / 15;
                 
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px)`;
+                
+                // 添加光影效果
+                const glare = card.querySelector('.card-glare') || document.createElement('div');
+                if (!card.querySelector('.card-glare')) {
+                    glare.classList.add('card-glare');
+                    glare.style.position = 'absolute';
+                    glare.style.top = '0';
+                    glare.style.left = '0';
+                    glare.style.width = '100%';
+                    glare.style.height = '100%';
+                    glare.style.background = 'radial-gradient(circle at ' + x + 'px ' + y + 'px, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%)';
+                    glare.style.pointerEvents = 'none';
+                    card.appendChild(glare);
+                } else {
+                    glare.style.background = 'radial-gradient(circle at ' + x + 'px ' + y + 'px, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%)';
+                }
             });
             
             card.addEventListener('mouseleave', () => {
@@ -761,6 +1042,24 @@
         
         document.querySelectorAll('.version-card, .feature-item').forEach(el => {
             observer.observe(el);
+        });
+        
+        // 添加页面加载动画
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 500);
+        });
+        
+        // 添加滚动时的视差效果
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const header = document.querySelector('header');
+            
+            // 视差滚动效果
+            header.style.transform = `translateY(${scrollPosition * 0.1}px)`;
+            
+            // 其他视差效果可以在这里添加
         });
     </script>
 </body>
